@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Suivi calisthénie</title>
+<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#2563eb"><link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{--bg:#fff;--fg:#17181c;--mu:#6b7280;--cd:#f1f3f6;--ac:#2563eb;--ok:#16a34a;--bd:#e2e5ea;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111317;--fg:#eceef2;--mu:#9aa1ad;--cd:#1c1f26;--ac:#6ea0ff;--ok:#4ade80;--bd:#2a2e37;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#111317;--fg:#eceef2;--mu:#9aa1ad;--cd:#1c1f26;--ac:#6ea0ff;--ok:#4ade80;--bd:#2a2e37;color-scheme:dark}
+*{box-sizing:border-box}html,body{margin:0}body{background:var(--bg);color:var(--fg);font:16px/1.45 system-ui,-apple-system,Segoe UI,sans-serif;max-width:640px;margin:0 auto;padding:12px 14px 80px}
+h1{font-size:20px;margin:6px 0 10px}h2{font-size:17px;margin:14px 0 6px}
+nav{display:flex;gap:6px;margin-bottom:12px}nav button{flex:1;padding:10px 4px;border:1px solid var(--bd);background:var(--cd);color:var(--fg);border-radius:10px;font:inherit;font-weight:600}
+nav button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.card{background:var(--cd);border-radius:12px;padding:12px;margin-bottom:10px}
+.mu{color:var(--mu);font-size:14px}
+button.b,input,select{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:8px 10px}
+button.b{background:var(--ac);color:#fff;border:0;font-weight:600}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal div.h{text-align:center;font-size:12px;color:var(--mu)}
+.cal button{aspect-ratio:1;border:1px solid var(--bd);background:var(--bg);color:var(--fg);border-radius:8px;font:inherit;font-size:13px;padding:2px;position:relative}
+.cal button.s{background:var(--cd);font-weight:700}.cal button.t{outline:2px solid var(--ac)}.cal button.sel{background:var(--ac);color:#fff}
+.cal button small{display:block;font-size:10px;color:var(--ac)}.cal button.sel small{color:#fff}
+.cal button.d::after{content:"✓";position:absolute;top:0;right:3px;color:var(--ok);font-size:11px}
+.cal span{aspect-ratio:1}
+table{width:100%;border-collapse:collapse;font-size:14px}td{padding:6px 4px;border-bottom:1px solid var(--bd);vertical-align:top}td:last-child{text-align:right;white-space:nowrap;font-weight:600}
+.ph button{flex:1;padding:8px;border:1px solid var(--bd);background:var(--bg);color:var(--fg);border-radius:8px;font:inherit}.ph button.on{background:var(--ac);color:#fff}
+.ex{display:flex;gap:10px}.ex .ic{font-size:26px;width:42px;height:42px;display:grid;place-items:center;background:var(--bg);border-radius:10px;flex:none}
+.bar{height:10px;background:var(--bg);border-radius:6px;overflow:hidden;margin:8px 0}.bar i{display:block;height:100%;background:var(--ok)}
+svg{width:100%;height:auto;max-height:200px}
+.yr{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.mc{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}.mc i{font-size:9px;color:var(--mu);text-align:center;font-style:normal}.mc button{aspect-ratio:1;border:0;background:transparent;color:var(--fg);font:inherit;font-size:11px;padding:0;border-radius:5px}.mc span{aspect-ratio:1}
+.mc .c1,.lg.c1{background:#2563eb55}.mc .c2,.lg.c2{background:#16a34a55}.mc .c3,.lg.c3{background:#d9770655}.mc .c4,.lg.c4{background:#9333ea55}.mc .d{box-shadow:inset 0 0 0 2px var(--ok)}.mc .t{outline:2px solid var(--ac)}.mc .sel{background:var(--ac);color:#fff}.lg{padding:2px 8px;border-radius:6px;color:var(--fg)}nav button{font-size:13px}
+</style></head><body>
+<h1>💪 Suivi calisthénie</h1>
+<nav><button data-t="cal" class="on">Calendrier</button><button data-t="ex">Exercices</button><button data-t="h">Historique</button><button data-t="w">Poids</button></nav>
+<main id="v"></main>
+<script>
+const S=[
+["Séance 1 · Handstand + force push","Triceps (2×8-12, à l’échec)",[["Handstand : entrées puis maintien","8 essais · 10-20 s","8 essais · 20-30 s","6 essais · 30-45 s"],["Chest-to-wall hold","3×30 s","3×40 s","3×45 s"],["Handstand shifts au mur","—","3×5/côté","4×5/côté"],["Pike push-ups déclinés","3×5-8","4×5-8","HSPU négatifs 3×3-5"],["Dips sur barres","3×6-10","3×6-10","3×6-10"]]],
+["Séance 2 · Front lever + force pull","Biceps : curl incliné (2×8-12, à l’échec)",[["Front lever","Tuck 5×5-10 s","Adv. tuck 5×4-8 s","Adv. tuck 5×6-10 s + one leg 4×2-4 s"],["Front lever raises","3×5 (tuck)","4×3-5","4×3-5"],["Scap pulls + hollow hold","3×8 + 3×20 s","3×8 + 3×25 s","3×8 + 3×30 s"],["Pyramide de tractions 1→6→1","1 pyramide","1 pyramide","1 pyramide (lestée si facile)"],["Rows australiens (pieds surélevés)","3×8-12","3×8-12","3×8-12"]]],
+["Séance 3 · Drapeau + handstand technique","Bas du dos : bird-dog 2×10 + extension 45° légère 2×12",[["Drapeau","Vertical/tuck 5×3-6 s/côté","Straddle 5×3-6 s/côté","Straddle 5×5-8 s + essais full"],["Relevés de jambes latéraux","3×6","3×6","3×6"],["Gainage latéral","3×30 s","3×35 s","3×40 s"],["Tractions prise large","3×5-8","3×5-8","3×5-8"],["Handstand technique","4 essais · 15-25 s","4 essais · 20-30 s","Main libre décollée au mur 3×3-5 s/côté"]]],
+["Séance 4 · Front lever volume + pull léger","Aucune finition",[["Front lever","Tuck 4×5-8 s","Adv. tuck 4×4-6 s","Adv. tuck 4×6-8 s + one leg 3×2-3 s"],["Tuck front lever rows","3×5-8","3×5-8","3×5-8"],["Tractions prise serrée","3×5-8","3×5-8","3×5-8"],["Face pulls / reverse flys","2×12-15","2×12-15","2×12-15"],["Dead hang actif","2×30 s","2×30 s","2×40 s"]]]];
+const E=[["🤸","Entrée en handstand (kick-up)","Une jambe tendue monte, l’autre pousse. Monte lentement jusqu’à passer les hanches au-dessus des épaules."],["🙃","Maintien handstand","Bras verrouillés, épaules poussées vers les oreilles, côtes rentrées, fessiers serrés, jambes jointes. Corrige avec les doigts et la base des mains."],["🧱","Chest-to-wall hold","Ventre face au mur, marche avec les mains jusqu’à être presque collé. Idéal pour apprendre l’alignement."],["↔️","Handstand shifts","Déplace le poids d’une main à l’autre, la main allégée reste au sol. Base du one arm."],["🔺","Pike push-ups déclinés","Pieds sur un banc, hanches hautes. Descends la tête entre les mains, remonte en poussant."],["⬇️","HSPU négatifs","Au mur, descends en 3-5 s jusqu’à toucher le sol (coussin), redescends les pieds et recommence."],["🪑","Dips sur barres","Épaules loin des oreilles, coudes à environ 90°, remonte sans verrouiller brutalement."],["🧲","Tuck front lever","Suspendu, genoux contre la poitrine, dos horizontal, bras tendus, épaules tirées vers le bas."],["📐","Advanced tuck","Comme le tuck, mais dos horizontal et genoux éloignés de la poitrine (hanches à 90°)."],["🦵","Front lever one leg","Une jambe tendue, l’autre en tuck. Alterne les jambes."],["⬆️","Front lever raises","Monte à l’horizontale (tuck), redescends en 3 s."],["🔽","Scap pulls","Suspendu bras tendus, tire seulement les omoplates vers le bas."],["🌙","Hollow hold","Sur le dos, bas du dos plaqué, jambes tendues, épaules légèrement levées. Sans cambrer."],["🔁","Pyramide de tractions","1 traction la 1re minute, +1 par minute jusqu’à 6, puis redescends jusqu’à 1."],["🧗","Rows australiens","Sous une barre basse, corps droit, tire la poitrine vers la barre. Pieds surélevés = plus dur."],["🚩","Drapeau (vertical, tuck, straddle, full)","Bras du haut pousse, bras du bas tire. Vertical = pieds au sol, tuck = genoux pliés, straddle = jambes écartées, full = jambes jointes."],["🦿","Relevés de jambes latéraux","Suspendu, monte les jambes tendues d’un côté puis de l’autre."],["📏","Gainage latéral","Sur un coude, corps droit, hanche haute. Ne laisse pas tomber le bassin."],["🏋️","Tractions larges / serrées","Menton au-dessus de la barre, descente contrôlée. Large = dos, serré = plus de bras."],["🎯","Face pulls / reverse flys","Élastique ou poulie haute, tire vers le visage en ouvrant les coudes. Protège les épaules."],["🪝","Dead hang actif","Suspendu, épaules actives (loin des oreilles), bras tendus."],["🐕","Bird-dog","À quatre pattes, bras et jambe opposés tendus, tiens 5 s. Dos plat et immobile."],["🪑","Extension 45° légère","Descends lentement, remonte jusqu’à l’alignement, jamais plus haut. Stop si gêne lombaire."],["💪","Curl incliné / extension triceps","Coudes fixes, mouvement lent, à l’échec sur la dernière série."]];
+let st={anchor:null,done:{},ph:1,goal:null,w:[]};
+try{Object.assign(st,JSON.parse(localStorage.getItem("cali")||"{}"))}catch(e){}
+const sv=()=>{try{localStorage.setItem("cali",JSON.stringify(st))}catch(e){}};
+const pad=n=>String(n).padStart(2,"0"),ds=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const U=s=>{const[a,b,c]=s.split("-").map(Number);return Date.UTC(a,b-1,c)};
+const today=ds(new Date());if(!st.anchor){st.anchor=today;sv()}
+let tab="cal",sel=today,mo=new Date();mo.setDate(1);
+const ses=d=>{const n=Math.round((U(d)-U(st.anchor))/864e5);return n<0||n%2?null:(n/2)%4};
+const MN=["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"];
+let yr=new Date().getFullYear();
+function det(){const s=ses(sel);let h='<h2>'+new Date(sel+"T12:00").toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long",year:"numeric"})+"</h2>";
+if(s===null)return h+'<div class="card">Jour de repos 😴 Hydrate-toi, dors bien, mobilité douce si tu veux.</div>';
+const q=S[s];h+='<div class="card"><b>'+q[0]+'</b><div class="mu">Échauffement complet (poignets, coudes, épaules, tronc) avant de commencer.</div><div class="row ph" style="margin:8px 0">';
+[1,2,3].forEach(p=>h+='<button data-p="'+p+'" class="'+(st.ph==p?"on":"")+'">Phase '+p+"</button>");
+h+='</div><table>';q[2].forEach(e=>h+="<tr><td>"+e[0]+"</td><td>"+e[st.ph]+"</td></tr>");
+return h+'</table><p class="mu">Finition : '+q[1]+'</p><div class="row"><button class="b" id="dn">'+(st.done[sel]?"✓ Séance faite (annuler)":"Marquer comme faite")+"</button></div></div>"}
+function cal(){let h='<div class="card"><div class="row" style="justify-content:space-between"><button class="b" id="pm">‹</button><b>'+yr+'</b><button class="b" id="nm">›</button></div></div>'+det();
+h+='<div class="row mu" style="margin:10px 0">'+[1,2,3,4].map(i=>'<span class="lg c'+i+'">S'+i+"</span>").join("")+"<span>Contour vert = faite</span></div><div class=\"yr\">";
+for(let m=0;m<12;m++){const f=(new Date(yr,m,1).getDay()+6)%7,n=new Date(yr,m+1,0).getDate();h+="<div><b>"+MN[m]+'</b><div class="mc">';
+["L","M","M","J","V","S","D"].forEach(x=>h+="<i>"+x+"</i>");for(let i=0;i<f;i++)h+="<span></span>";
+for(let d=1;d<=n;d++){const k=yr+"-"+pad(m+1)+"-"+pad(d),s=ses(k);h+='<button data-d="'+k+'" class="'+(s!==null?"c"+(s+1)+" ":"")+(k==today?"t ":"")+(k==sel?"sel ":"")+(st.done[k]?"d":"")+'">'+d+"</button>"}h+="</div></div>"}
+h+='</div><div class="card" style="margin-top:12px"><div class="mu">Date de ta séance 1 (le cycle repart de là, un jour sur deux) :</div><div class="row" style="margin-top:6px"><input type="date" id="an" value="'+st.anchor+'"><button class="b" id="sa">Appliquer</button></div><div class="mu" style="margin-top:6px">Si tu décales une séance, change cette date pour recaler tout le calendrier. Utilise ‹ › pour changer d’année.</div></div>';return h}
+function hist(){const k=Object.keys(st.done).sort().reverse(),c=[0,0,0,0];k.forEach(d=>c[(st.done[d]-1)%4]++);const mm=today.slice(0,7);
+let h='<div class="card"><b>'+k.length+" séances faites</b> · "+k.filter(d=>d.slice(0,7)==mm).length+' ce mois-ci<div class="mu">S1 : '+c[0]+" · S2 : "+c[1]+" · S3 : "+c[2]+" · S4 : "+c[3]+"</div></div>";
+if(!k.length)return h+'<div class="card mu">Aucune séance enregistrée. Marque tes séances comme faites dans le calendrier.</div>';
+return h+'<div class="card">'+k.map(d=>'<div class="row" style="justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--bd)"><span><b>'+new Date(d+"T12:00").toLocaleDateString("fr-FR",{weekday:"short",day:"numeric",month:"short",year:"numeric"})+'</b><br><span class="mu">'+S[(st.done[d]-1)%4][0]+'</span></span><button class="b" data-x="'+d+'" style="padding:4px 10px">✕</button></div>').join("")+"</div>"}
+function ex(){return E.map(e=>'<div class="card ex"><div class="ic">'+e[0]+"</div><div><b>"+e[1]+'</b><div class="mu">'+e[2]+"</div></div></div>").join("")}
+function wt(){const w=[...st.w].sort((a,b)=>a.d<b.d?-1:1),l=w.length?w[w.length-1].v:null,s0=w.length?w[0].v:null;
+let h='<div class="card"><div class="row"><input type="number" step="0.1" id="wv" placeholder="Poids (kg)" style="width:130px"><button class="b" id="aw">Ajouter aujourd’hui</button></div></div>';
+h+='<div class="card"><div class="mu">Objectif de poids (kg)</div><div class="row" style="margin-top:6px"><input type="number" step="0.1" id="gv" value="'+(st.goal??"")+'" style="width:130px"><button class="b" id="sg">Enregistrer</button></div>';
+if(l!==null){h+='<p>Actuel : <b>'+l+" kg</b>";if(st.goal){const df=(l-st.goal).toFixed(1);h+=" · Objectif : <b>"+st.goal+" kg</b> · "+(df>0?"encore "+df+" kg à perdre":df<0?"encore "+(-df)+" kg à prendre":"atteint 🎉")+"</p>";const t=s0-st.goal,p=t==0?100:Math.max(0,Math.min(100,(s0-l)/t*100));h+='<div class="bar"><i style="width:'+p.toFixed(0)+'%"></i></div><div class="mu">Progression depuis ton 1er poids ('+s0+" kg) : "+p.toFixed(0)+" %</div>"}else h+="</p>"}h+="</div>";
+if(w.length>1){const W=300,H=140,vs=w.map(x=>x.v).concat(st.goal?[st.goal]:[]),mn=Math.min(...vs)-1,mx=Math.max(...vs)+1,X=i=>10+i*(W-20)/(w.length-1),Y=v=>H-10-(v-mn)/(mx-mn)*(H-20);
+h+='<div class="card"><svg viewBox="0 0 '+W+" "+H+'">'+(st.goal?'<line x1="10" x2="'+(W-10)+'" y1="'+Y(st.goal)+'" y2="'+Y(st.goal)+'" stroke="var(--ok)" stroke-dasharray="4"/>':"")+'<polyline fill="none" stroke="var(--ac)" stroke-width="2" points="'+w.map((x,i)=>X(i)+","+Y(x.v)).join(" ")+'"/>'+w.map((x,i)=>'<circle cx="'+X(i)+'" cy="'+Y(x.v)+'" r="3" fill="var(--ac)"/>').join("")+"</svg></div>"}
+h+='<div class="card">'+(w.length?w.slice().reverse().map(x=>'<div class="row" style="justify-content:space-between;padding:4px 0"><span>'+x.d+"</span><b>"+x.v+' kg</b><button class="b" data-x="'+x.d+'" style="padding:4px 10px">✕</button></div>').join(""):'<span class="mu">Aucune pesée pour l’instant.</span>')+"</div>";return h}
+function R(){const v=document.getElementById("v");v.innerHTML=tab=="cal"?cal():tab=="ex"?ex():tab=="h"?hist():wt();
+document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.t==tab));
+const g=i=>document.getElementById(i);
+if(tab=="cal"){g("pm").onclick=()=>{yr--;R()};g("nm").onclick=()=>{yr++;R()};
+v.querySelectorAll("[data-d]").forEach(b=>b.onclick=()=>{sel=b.dataset.d;R();scrollTo(0,0)});v.querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>{st.ph=+b.dataset.p;sv();R()});
+if(g("dn"))g("dn").onclick=()=>{if(st.done[sel])delete st.done[sel];else st.done[sel]=ses(sel)+1;sv();R()};
+g("sa").onclick=()=>{if(g("an").value){st.anchor=g("an").value;sv();R()}}}
+if(tab=="h")v.querySelectorAll("[data-x]").forEach(b=>b.onclick=()=>{delete st.done[b.dataset.x];sv();R()});
+if(tab=="w"){g("aw").onclick=()=>{const x=parseFloat(g("wv").value);if(!x)return;st.w=st.w.filter(e=>e.d!=today);st.w.push({d:today,v:x});sv();R()};
+g("sg").onclick=()=>{const x=parseFloat(g("gv").value);st.goal=x||null;sv();R()};v.querySelectorAll("[data-x]").forEach(b=>b.onclick=()=>{st.w=st.w.filter(e=>e.d!=b.dataset.x);sv();R()})}}
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{tab=b.dataset.t;R()});R();
+if("serviceWorker" in navigator)addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+</script></body></html>
